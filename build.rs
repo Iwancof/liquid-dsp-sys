@@ -3,23 +3,12 @@ use std::env;
 fn main() {
     println!("cargo::rerun-if-changed=build.rs");
 
-    std::process::Command::new("git")
-        .args(&["submodule", "update", "--init", "--recursive"])
-        .status()
-        .expect("Failed to update submodules");
-
-    // cd liquid-dsp. and run ./bootstrap.sh
-    std::process::Command::new("sh")
-        .args(&["-c", "cd liquid-dsp && ./bootstrap.sh && ./configure && make -j"])
-        .status()
-        .expect("Failed to build liquid-dsp");
-
     let out_dir = env::var("OUT_DIR").unwrap();
 
     let bindgen = bindgen::Builder::default()
         .generate_comments(true)
-        .header("./liquid-dsp/include/liquid.h");
-    // .header("/usr/include/liquid/liquid.h")
+        // .header("./liquid-dsp/include/liquid.h");
+        .header("/usr/include/liquid/liquid.h");
 
     let bindgen = if env::var("CARGO_FEATURE_NUM_COMPLEX").is_ok() {
         bindgen
@@ -36,9 +25,9 @@ fn main() {
         .expect("Couldn't write bindings!");
 
     // add library search path
-    println!("cargo:rustc-link-search=./liquid-dsp/");
-    println!("cargo:rustc-link-lib=static=liquid");
-    // println!("cargo:rustc-link-lib=dylib=liquid");
+    // println!("cargo:rustc-link-search=./liquid-dsp/");
+    // println!("cargo:rustc-link-lib=static=liquid");
+    println!("cargo:rustc-link-lib=dylib=liquid");
 
     println!("cargo:rustc-link-lib=dylib=fftw3f");
 }
