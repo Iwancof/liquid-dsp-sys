@@ -1,11 +1,15 @@
 [package]
 name = "liquid-dsp-sys"
 version = "0.1.0"
+authors = ["Ryosuke Iwahashi <iwancof@gmail.com>"]
+description = "Rust bindings for liquid-dsp"
+license = "MIT"
 edition = "2021"
+keywords = ["liquid-dsp", "dsp", "signal processing", "ffi", "bindings"]
+categories = ["external-ffi-bindings"]
+repository = "https://github.com/Iwancof/liquid-dsp-sys/"
 
 build = "build.rs"
-
-crate-type = ["rlib"]
 
 [dependencies]
 num-complex = { version = "0.4.6", optional = true }
